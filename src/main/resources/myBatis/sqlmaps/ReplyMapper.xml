@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="Reply">
+	<resultMap type="com.spring.reply.vo.ReplyVo" id="ReplyVo">
+		<result property="reply_id" column="REPLY_ID" javaType="String"/>
+		<result property="board_id" column="BOARD_ID" javaType="String"/>
+		<result property="nickname" column="NICKNAME" javaType="String"/>
+		<result property="content" column="CONTENT" javaType="String"/>
+		<result property="date" column="REGDATE" javaType="String"/>
+	</resultMap>
+	<select id="ReplyList" statementType="CALLABLE" parameterType="hashmap"
+	resultType="com.spring.reply.vo.ReplyVo">
+	{Call PKG_WBOARD.PROC_REPLY_LIST(
+		 #{board_id,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{result,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=ReplyVo}
+	)}
+	</select>
+	<select id="ReplyVo" statementType="CALLABLE" parameterType="hashmap"
+	resultType="com.spring.reply.vo.ReplyVo">
+	{Call PKG_WBOARD.PROC_REPLY_CONTENT(
+		 #{board_id,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{reply_id,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{result,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=ReplyVo}
+	)}
+	</select>
+	<insert id="ReplyInsert" statementType="CALLABLE" parameterType="hashmap" >
+	{Call PKG_WBOARD.PROC_REPLY_WRITE(
+		 #{board_id,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{nickname,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{contents,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+	)}
+	</insert>
+	<update id="ReplyUpdate" statementType="CALLABLE" parameterType="hashmap" >
+	{Call PKG_WBOARD.PROC_REPLY_UPDATE(
+		 #{board_id,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{reply_id,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{contents,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+	)}
+	</update>
+	<delete id="ReplyDelete" statementType="CALLABLE" parameterType="hashmap" >
+	{Call PKG_WBOARD.PROC_REPLY_DELETE(
+		  #{board_id,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{reply_id,mode=IN,jdbcType=VARCHAR,javaType=String}
+		 ,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		 ,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+	)}
+	</delete>
+
+ </mapper>	

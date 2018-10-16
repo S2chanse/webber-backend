@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="Template">
+	<resultMap type="com.spring.template.vo.TemplateVo" id="TemplateVo">
+		<result property="template_id"  	column="TEMPLATE_ID" 	javaType="String"/>
+		<result property="nickname" 		column="NICK_NAME" 		javaType="String"/>
+		<result property="file_name"		column="FILE_NAME" 		javaType="String"/>
+		<result property="file_path_html"   column="FILE_PATH_HTML" javaType="String"/>
+		<result property="file_path_css" 	column="FILE_PATH_CSS"  javaType="String"/>
+		<result property="thumbnail" 	    column="THUMBNAIL" 		javaType="String"/>
+		<result property="views" 	 		column="views" 			javaType="int"/>
+		<result property="regdate" 			column="REGDATE" 		javaType="String"/>
+		<result property="likes" 	 		column="LIKEPOINT" 		javaType="int"/>		
+		<result property="favor" 	 		column="FAVOR" 		 	javaType="int"/>		
+	</resultMap>
+	<select id="TemplateList" statementType="CALLABLE" parameterType="hashmap"
+	resultType="com.spring.template.vo.TemplateVo">
+	{Call PKG_WBOARD.PROC_TEMPLATE_LIST(	
+		 #{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{field,mode=IN,jdbcType=VARCHAR}
+		,#{word,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{result,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=TemplateVo}
+	)}
+	</select>
+	<select id="TemplateVo" statementType="CALLABLE" parameterType="hashmap"
+	resultType="com.spring.template.vo.TemplateVo">
+	{Call PKG_WBOARD.PROC_TEMPLATE_CONTENT(
+		 #{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{board_id,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{result,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=TemplateVo}
+	)}
+	</select>
+	<insert id="TemplateInsert" statementType="CALLABLE" parameterType="hashmap">
+		{Call PKG_WBOARD.PROC_UPLOAD_FILE(
+		 #{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{fileName,mode=IN,jdbcType=VARCHAR}
+		,#{filePathHTML,mode=IN,jdbcType=VARCHAR}
+		,#{filePathCSS,mode=IN,jdbcType=VARCHAR}
+		,#{thumbnail,mode=IN,jdbcType=VARCHAR}		
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		)}
+	</insert>
+		<delete id="TemplateDelete" statementType="CALLABLE"  parameterType="hashmap">
+		{Call PKG_WBOARD.PROC_TMPLATE_DELETE(
+		 #{board_id,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		)}
+	</delete>
+		<delete id="TemplateUpdate" statementType="CALLABLE"  parameterType="hashmap">
+		{Call PKG_WBOARD.PROC_TMPLATE_UPDATE(
+		 #{board_id,mode=IN,jdbcType=VARCHAR}
+		,#{thumbnail,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		)}
+	</delete>
+	
+	<delete id="TemplateLike" statementType="CALLABLE"  parameterType="hashmap">
+		{Call PKG_WBOARD.PROC_TEMPLATE_LIKE(
+		 #{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{board_id,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		)}
+	</delete>
+	
+	<delete id="TemplateFavor" statementType="CALLABLE"  parameterType="hashmap">
+		{Call PKG_WBOARD.PROC_TEMPLATE_LIKE(
+		 #{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{board_id,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		)}
+	</delete>
+ </mapper>	

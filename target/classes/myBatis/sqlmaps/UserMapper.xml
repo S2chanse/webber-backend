@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="User">
+	<resultMap type="com.spring.user.vo.UserVo" id="UserVo">
+		<result property="email" column="email" javaType="String"/>
+		<result property="nickname" column="nick_name" javaType="String"/>
+		<result property="thumbnail" column="thumbnail" javaType="String"/>
+		<result property="intro" column="intro" javaType="String"/>
+		<result property="auth" column="auth" javaType="int"/>
+		<result property="accessToken" column="accessToken" javaType="String"/>
+	</resultMap>
+	
+	<select id="UserNicknameCheck" statementType="CALLABLE" parameterType="hashmap">
+		{Call PKG_WUSER.PORC_WUSER_CHECK_ID(
+			 #{nickname,mode=IN,jdbcType=VARCHAR}
+			,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+			,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		)}
+	</select>
+	
+	<select id="UserCheck" statementType="CALLABLE" parameterType="hashmap"
+	resultType="com.spring.user.vo.UserVo">
+	{Call PKG_WUSER.PROC_WUSER_CHECK(
+			#{type,mode=IN,jdbcType=VARCHAR}
+		,#{id,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{result,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=UserVo}
+	)}
+	</select>
+	<insert id="UserInsert" statementType="CALLABLE" parameterType="hashmap">
+	{Call PKG_WUSER.PROC_WUSER_REG(
+		 #{email,mode=IN,jdbcType=VARCHAR}
+		,#{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{thumbnail,mode=IN,jdbcType=VARCHAR}
+		,#{intro,mode=IN,jdbcType=VARCHAR}
+		,#{type,mode=IN,jdbcType=VARCHAR}
+		,#{id,mode=IN,jdbcType=VARCHAR}
+		,#{accessToken,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+	)}
+	</insert>
+	<select id="UserList" statementType="CALLABLE" parameterType="hashmap"
+	resultType="com.spring.user.vo.UserVo">
+	{Call PKG_WUSER.PROC_WUSER_LIST(	
+		 #{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{result,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=UserVo}
+	)}
+	</select>
+	<select id="UserVo" statementType="CALLABLE" parameterType="hashmap"
+	resultType="com.spring.user.vo.UserVo">
+	{Call PKG_WUSER.PROC_WUSER_Vo(
+		 #{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{result,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=UserVo}
+	)}
+	</select>
+	<update id="UserUpdate" statementType="CALLABLE" parameterType="hashmap">
+	{Call PKG_WUSER.PROC_WUSER_UPDATE(
+		 #{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{comment,mode=IN,jdbcType=VARCHAR}
+		,#{thumbnail,mode=IN,jdbcType=VARCHAR}		 
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+	)}
+	</update>
+	<update id="UserGone" statementType="CALLABLE" parameterType="hashmap">
+	{Call PKG_WUSER.PROC_WUSER_DELETE(
+		 #{type,mode=IN,jdbcType=VARCHAR}
+		,#{nickname,mode=IN,jdbcType=VARCHAR}
+		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
+		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
+	)}
+	</update>
+	</mapper>

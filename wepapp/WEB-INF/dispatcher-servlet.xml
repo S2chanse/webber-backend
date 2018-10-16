@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<context:component-scan base-package="com.*"></context:component-scan>
+	<mvc:annotation-driven/>
+	
+	<mvc:resources location="/WEB-INF/resources/css/" mapping="/css/**"></mvc:resources>
+	<mvc:resources location="/WEB-INF/resources/js/" mapping="/js/**"></mvc:resources>
+	<mvc:resources location="/WEB-INF/resources/img/" mapping="/img/**"></mvc:resources>
+	<mvc:resources location="D:/uploadFile/" mapping="/profilePhoto/**"></mvc:resources>
+	<mvc:annotation-driven>
+
+         <!-- messageConvertert -->
+
+         <mvc:message-converters>
+
+                  <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+
+                           <property name="supportedMediaTypes">
+
+                                   <list>
+
+                                            <value>text/html; charset=UTF-8</value>
+
+                                   </list>
+
+                           </property>
+
+                  </bean>
+
+         </mvc:message-converters>
+	
+
+
+</mvc:annotation-driven>
+	 
+	<bean id="viewResolver" 
+	class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+		<property name="prefix" value="/WEB-INF/views/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="chanse"/>
+		<property name="password" value="1234"/>		
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations" value="classpath:myBatis/sqlmaps/*.xml"></property>
+	</bean> 
+
+ 	 <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+		destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory">
+		</constructor-arg>
+	</bean> 
+	
+	<!-- MultipartResolver 설정-->
+	<bean id="multipartResolver"
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10000000"/>
+		<property name="maxInMemorySize" value="10000000"/>
+	</bean>
+		<!-- InterCeptor사용 -->
+	<bean id="LoginInterceptor" class="com.spring.interceptor.LoginInterceptor">
+	</bean>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/api/**"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<ref bean="LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors> 
+	
+	
+</beans>
