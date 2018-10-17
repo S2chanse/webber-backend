@@ -60,7 +60,7 @@ public class LoginRestController {
 	}
 	
 	@RequestMapping(value="/register",method=RequestMethod.POST)
-	public ResultMsgVo userRegist(@RequestBody HashMap<String,Object> map) {
+	public ResultMsgVo userRegist(@RequestParam HashMap<String,Object> map) {
 		System.out.println("회원가입"+map);
 		
 		userService.insertUser(map);

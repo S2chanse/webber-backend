@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.spring.reply.service.ReplyService;
 import com.spring.reply.vo.ReplyVo;
 import com.spring.result.vo.ResultMsgVo;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/community")
 public class BoardRestController {
@@ -53,8 +55,9 @@ public class BoardRestController {
 	DELETE	/api/community/:board_id	구분자 값의 게시자료를 삭제한다.*/
 	
 	//자유게시판 게시물 추가하기
-	@RequestMapping(method=RequestMethod.POST,produces="application/json; charset=utf-8")
-	public ResultMsgVo insertBoard(@RequestBody HashMap<String,Object> map) {
+	@RequestMapping(method=RequestMethod.POST)
+	public ResultMsgVo insertBoard(@RequestParam HashMap<String,Object> map) {
+		System.out.println(map);
 		boardService.insertBoard(map);
 		if(map.get("err_code")!=null) {
 			throw new NotExsistExcpetion("fail/-22");
@@ -64,7 +67,7 @@ public class BoardRestController {
 	
 	//자유게시판 게시물 수정하기
 	@RequestMapping(value="/{board_id}",method=RequestMethod.PUT,produces="application/json;charset=utf-8")
-	public ResultMsgVo updateBoard(@PathVariable("board_id")String board_id,@RequestBody HashMap<String,Object>map) {
+	public ResultMsgVo updateBoard(@PathVariable("board_id")String board_id,@RequestParam HashMap<String,Object>map) {
 		map.put("board_id", board_id);
 		boardService.updateBoard(map);
 		if(map.get("err_code")!=null) {
