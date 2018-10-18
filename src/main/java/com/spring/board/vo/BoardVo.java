@@ -14,8 +14,16 @@ public class BoardVo {
 	private String regdate;
 	private int		replyNum;
 	private int		type;
+	private String thumbnail;
 	private List<ReplyVo> replies;
 	//getter&setter
+	
+	public String getThumbnail() {
+		return thumbnail;
+	}
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
+	}
 	public String getBoard_Id() {
 		return board_Id;
 	}
@@ -94,6 +102,20 @@ public class BoardVo {
 		this.regdate = regdate;
 		this.replyNum = replyNum;
 		this.type = type;
+		this.replies = replies;
+	}
+	
+	public BoardVo(String board_Id, String nickname, String title, String content, int views, String regdate,
+			int replyNum, int type, String thumbnail, List<ReplyVo> replies) {
+		this.board_Id = board_Id;
+		this.nickname = nickname;
+		this.title = title;
+		this.content = content;
+		this.views = views;
+		this.regdate = regdate;
+		this.replyNum = replyNum;
+		this.type = type;
+		this.thumbnail = thumbnail;
 		this.replies = replies;
 	}
 	//toString

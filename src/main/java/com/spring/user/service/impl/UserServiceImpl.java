@@ -40,45 +40,14 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public UserVo checkUser(HttpServletRequest req,HttpServletResponse resp,@RequestParam HashMap<String, Object> map) {
-		UserVo userVo=new UserVo();
-		Cookie cookie=WebUtils.getCookie(req, "auth");
-		if(cookie!=null) {
-			String cookieStr=cookie.getValue();
-			Map<String,Object> tokenMap=tokenService.get(cookieStr);
-			String nickname=(String) map.get("nickname");
-			String thumbnail=(String)map.get("thumbnail");
-			int auth=(int) map.get("auth");
-			userVo.setAuth(auth);
-			userVo.setNickname(nickname);
-			userVo.setThumbnail(thumbnail);
-			
-		}else {	
-			UserVo uservo=userDao.checkUser(map);
-			//System.out.println("유저내용ㅣ  "+uservo.toString());
-			if(uservo==null) {
-				if(map.get("err_code")!=null) {
-					//System.out.println(11111);
-					if(map.get("err_code").equals("-4444")) {			
-						throw new NotExsistExcpetion("Out User/-2");
-					}
-					if(map.get("err_code").equals("77777")) {			
-						//System.out.println(22222);
-						throw new NotExsistExcpetion("Not User/-1");
-					}
-					throw new OracleError("Not regist/-9");
-				}
-				//System.out.println("유저 확인후 :  "+map);
-			}else {
-				System.out.println("쿠키를 만듭시다.");
-				String token=tokenService.createToken(uservo);
-				System.out.println("webber "+token);
-				
-				MakeCookie mc=new MakeCookie();
-				mc.makeCookie(req, resp, token);
-					
-			}
-		}
+	public UserVo checkUser(HttpServletRequest req,HttpServletResponse resp,@RequestParam HashMap<String, Object> map) {	
+				UserVo uservo=userDao.checkUser(map);
+				UserVo userVo=new UserVo();
+				userVo.setAuth(uservo.getAuth());
+				userVo.setNickname(uservo.getNickname());
+				userVo.setThumbnail(uservo.getThumbnail());
+				String token=tokenService.createToken(userVo);
+				map.put("token", token);
 		return userVo;
 		
 	}

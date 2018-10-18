@@ -19,6 +19,7 @@ import org.springframework.web.util.WebUtils;
 
 import com.spring.error.NotExsistExcpetion;
 import com.spring.error.OracleError;
+import com.spring.result.vo.ResultLogInVo;
 import com.spring.result.vo.ResultMsgVo;
 import com.spring.user.service.UserService;
 import com.spring.user.vo.UserVo;
@@ -44,9 +45,10 @@ public class LoginRestController {
 		
 	}
 	@RequestMapping(value="/login",method=RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public ResultMsgVo userLogIn(@RequestBody HashMap<String,Object> map,HttpServletRequest req,HttpServletResponse resp) {
+	public ResultLogInVo userLogIn(@RequestBody HashMap<String,Object> map,HttpServletRequest req,HttpServletResponse resp) {
 		System.out.println("로그인시 들어오는 정보들"+map);
-		userService.checkUser(req,resp,map);
+		UserVo uservo=userService.checkUser(req,resp,map);
+		String token=(String) map.get("token");
 		if(map.get("err_code")!=null) {
 			if(map.get("err_code").equals("-4444")) {			
 				throw new NotExsistExcpetion("Out User/-2");
@@ -56,7 +58,7 @@ public class LoginRestController {
 			}
 				throw new OracleError("Not regist/-9");
 		}
-		return new ResultMsgVo();
+		return new ResultLogInVo(token,uservo);
 	}
 	
 	@RequestMapping(value="/register",method=RequestMethod.POST)

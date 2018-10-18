@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.util.WebUtils;
 
 public class MakeSession {
-	
 	public void makeSession(Map<String,Object> map,HttpServletRequest req,HttpServletResponse resp) {
 		HttpSession session = null;
 		String nickname=(String) map.get("nickname");

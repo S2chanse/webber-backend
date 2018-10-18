@@ -12,6 +12,7 @@
 		<result property="replyNum" column="replyNum" javaType="int"/>
 		<result property="type" column="type" javaType="int"/>
 		<result property="regdate" column="regdate" javaType="String"/>
+		<result property="thumbnail" column="THUMBNAIL" javaType="String"/>
 	</resultMap>
 	<select id="BoardList" statementType="CALLABLE" parameterType="hashmap"
 	resultType="com.spring.board.vo.BoardVo">

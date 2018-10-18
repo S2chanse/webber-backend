@@ -28,8 +28,8 @@ public class BoardRestController {
 	@Autowired
 	private ReplyService replyService;
 	//전체 게시물 가져오기
-	@RequestMapping(value="",method=RequestMethod.GET, produces = "application/json; charset=utf-8")
-	public List<BoardVo> getList(@RequestBody HashMap<String,Object>map){
+	@RequestMapping(value="",method=RequestMethod.GET)
+	public List<BoardVo> getList(HashMap<String,Object>map){
 		List<BoardVo> boardList=boardService.getList(map);
 		return boardList;
 	}
