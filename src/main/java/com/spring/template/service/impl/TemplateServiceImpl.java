@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,6 +58,18 @@ public class TemplateServiceImpl implements TemplateService {
 	public void insertTemplate(HashMap<String, Object> map,HttpServletRequest req) {
 		System.out.println("자료-------------"+map);
 		System.out.println("req-------------"+req);
+		String token=(String) map.get("access_token");
+		if(tokenService.isUsable(token)) {
+			Map<String,Object> userInfo=tokenService.get(token);
+			String nickname=(String) userInfo.get("nickname");
+			map.put("nickname",nickname);
+		}else {
+			map.put("err_code", "-47474447");
+			return ;
+		}
+		
+		
+		
 		//업로드될 파일명과 같은 파일이 있는지 확인		
 		/*
 		 * 파일 업로드 비지니스 로직 시작
@@ -80,7 +93,7 @@ public class TemplateServiceImpl implements TemplateService {
 		
 		
 		//img파일 저장 위치
-		String filePath="D:\\uploadFile\\templatephoto\\";
+		String filePath="D:\\wsspring02\\WebberPrj\\wepapp\\WEB-INF\\resources\\img\\templateP\\";
 			   filePath+=nickName;
 			   
 	    File file=new File(filePath);
@@ -90,7 +103,7 @@ public class TemplateServiceImpl implements TemplateService {
 	    
 	    System.out.println("파일 생성");
 	    String sFileName=uif.uploadImg(req, filePath);
-		map.put("thumbnail", "/tImg/templatephoto/"+nickName+"/"+sFileName);
+		map.put("thumbnail", "/img/templateP/"+nickName+"/"+sFileName);
 		// /tImg/="d:\\uploadFile 경로"
 		filePath ="D:\\uploadFile";
 		
@@ -120,13 +133,23 @@ public class TemplateServiceImpl implements TemplateService {
 		map.put("filePathHTML", htmlPath);
 		map.put("filePathCSS", cssPath);
 		
-		System.out.println("현재 만들어진 어쩌구 저쩌구"+map);
+		//System.out.println("현재 만들어진 어쩌구 저쩌구"+map);
 		templateDao.insertTemplate(map);
 	}
 	
 	@Override
 	public void updateTemplate(HashMap<String, Object> map,HttpServletRequest req) {
 		
+		String token=(String) map.get("token");
+		
+		if(tokenService.isUsable(token)) {
+			Map<String,Object> userInfo=tokenService.get(token);
+			String nickname=(String) userInfo.get("nickname");
+			map.put("nickname",nickname);
+		}else {
+			map.put("err_code", "-47474447");
+			return ;
+		}
 		String nickName=(String) map.get("nickname");
 		
 		File file=null;
@@ -182,10 +205,10 @@ public class TemplateServiceImpl implements TemplateService {
 			String filePathImg=(String) map.get("thumbnail");
 		
 		
-			filePathImg=filePathImg.substring(5);
+			filePathImg=filePathImg.substring(4);
 			System.out.println("----------------"+filePathImg);
 			ImgFileModify ifm=new ImgFileModify();
-			ifm.uploadImg(req, "D:\\uploadFile\\"+filePathImg);
+			ifm.uploadImg(req, "D:\\wsspring02\\WebberPrj\\wepapp\\WEB-INF\\resources\\img\\"+filePathImg);
 	
 		System.out.println("수정용"+map);
 		

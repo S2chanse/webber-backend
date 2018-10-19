@@ -13,7 +13,6 @@
 	<mvc:resources location="/WEB-INF/resources/css/" mapping="/css/**"></mvc:resources>
 	<mvc:resources location="/WEB-INF/resources/js/" mapping="/js/**"></mvc:resources>
 	<mvc:resources location="/WEB-INF/resources/img/" mapping="/img/**"></mvc:resources>
-	<mvc:resources location="D:/uploadFile/" mapping="/profilePhoto/**"></mvc:resources>
 	<mvc:annotation-driven>
 
          <!-- messageConvertert -->

@@ -8,8 +8,16 @@ public class UserVo {
 	private String intro;
 	private int     auth;
 	private String  accessToken;
+	private String  socialType;
 	
 	//getter&setter
+	
+	public String getSocialType() {
+		return socialType;
+	}
+	public void setSocialType(String socialType) {
+		this.socialType = socialType;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -47,19 +55,26 @@ public class UserVo {
 		this.accessToken = accessToken;
 	}
 	//constructor	
-	public UserVo(String email, String nickname, String thumbnail, String intro, int auth) {
+	public UserVo(String email, String nickname, String thumbnail, String intro, int auth, String accessToken,
+			String socialType) {
+		
 		this.email = email;
 		this.nickname = nickname;
 		this.thumbnail = thumbnail;
 		this.intro = intro;
 		this.auth = auth;
+		this.accessToken = accessToken;
+		this.socialType = socialType;
 	}
 	public UserVo(){}
 	@Override
 	public String toString() {
 		return "UserVo [email=" + email + ", nickname=" + nickname + ", thumbnail=" + thumbnail + ", intro=" + intro
-				+ ", auth=" + auth + ", accessToken=" + accessToken +  "]";
+				+ ", auth=" + auth + ", accessToken=" + accessToken + ", socialType=" + socialType + "]";
 	}
+	
+	
+	
 	
 	
 	

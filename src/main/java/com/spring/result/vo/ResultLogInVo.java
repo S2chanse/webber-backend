@@ -21,5 +21,12 @@ public class ResultLogInVo {
 		this.token = token;
 		this.userVo = userVo;
 	}
+	public ResultLogInVo() {
+		
+	}
+	@Override
+	public String toString() {
+		return "ResultLogInVo [token=" + token + ", userVo=" + userVo + "]";
+	}
 	
 }

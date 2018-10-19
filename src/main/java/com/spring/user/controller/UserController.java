@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.error.NotExsistExcpetion;
+import com.spring.result.vo.ResultLogInVo;
 import com.spring.result.vo.ResultMsgVo;
 import com.spring.user.service.UserService;
 import com.spring.user.vo.UserVo;
@@ -46,13 +47,22 @@ public class UserController {
 	}
 	//유저 정보수정
 	@RequestMapping(value="/{nickname}",method=RequestMethod.POST,produces = "application/json; charset=utf-8")
-	public ResultMsgVo updateProfile(@PathVariable("nickname") String nickname,@RequestParam HashMap<String,Object>map,HttpServletRequest req,HttpServletResponse resp) {
+	public ResultLogInVo updateProfile(@PathVariable("nickname") String nickname,@RequestParam HashMap<String,Object>map,HttpServletRequest req,HttpServletResponse resp) {
 		map.put("nickname", nickname);
 		userService.updateInfo(map,req,resp);
+		ResultLogInVo rlv=new ResultLogInVo();
 		if(map.get("err_code")!=null) {
 			throw new NotExsistExcpetion("fail/-13");
+		}else {
+			String token=(String) map.get("token");
+			System.out.println("token자료  "+token);
+			UserVo uservo=(UserVo) map.get("userVo");
+			rlv.setToken(token);
+			rlv.setUserVo(uservo);
 		}
-		return new ResultMsgVo();
+		System.out.println(rlv.toString());
+		
+		return rlv;
 	}
 	//탈퇴
 	@RequestMapping(value="/{nickname}",method=RequestMethod.DELETE,produces = "application/json; charset=utf-8")

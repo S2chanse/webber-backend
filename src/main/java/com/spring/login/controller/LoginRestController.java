@@ -45,8 +45,8 @@ public class LoginRestController {
 		
 	}
 	@RequestMapping(value="/login",method=RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public ResultLogInVo userLogIn(@RequestBody HashMap<String,Object> map,HttpServletRequest req,HttpServletResponse resp) {
-		System.out.println("로그인시 들어오는 정보들"+map);
+	public HashMap<String,Object> userLogIn(@RequestBody HashMap<String,Object> map,HttpServletRequest req,HttpServletResponse resp) {
+		//System.out.println("로그인시 들어오는 정보들"+map);
 		UserVo uservo=userService.checkUser(req,resp,map);
 		String token=(String) map.get("token");
 		if(map.get("err_code")!=null) {
@@ -58,7 +58,11 @@ public class LoginRestController {
 			}
 				throw new OracleError("Not regist/-9");
 		}
-		return new ResultLogInVo(token,uservo);
+		HashMap<String,Object> result=new HashMap<>();
+		result.put("token", token);
+		result.put("userVo",uservo);
+		System.out.println("3000으로보내는 자료 :"+result);
+		return result;
 	}
 	
 	@RequestMapping(value="/register",method=RequestMethod.POST)

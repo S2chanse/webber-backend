@@ -28,6 +28,7 @@ public class BoardDaoImpl implements BoardDao {
 	@Override
 	public void insertBoard(HashMap<String, Object> map) {
 		sqlSession.insert("Board.BoardInsert",map);
+		System.out.println("나온 맵"+map);
 		
 	}
 	@Override

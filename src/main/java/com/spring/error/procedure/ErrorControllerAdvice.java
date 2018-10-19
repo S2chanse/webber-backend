@@ -10,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 import com.spring.error.NotExsistExcpetion;
 import com.spring.error.NotFoundError;
 import com.spring.error.OracleError;
+import com.spring.error.UnAuthException;
 import com.spring.error.msg.ErrorMessage;
 
 
@@ -49,6 +50,18 @@ public class ErrorControllerAdvice {
 	@ExceptionHandler(value= {OracleError.class})
 	@ResponseBody
 	protected ErrorMessage ServerError(RuntimeException ex,WebRequest wr) {
+		ErrorMessage em=new ErrorMessage();
+		em.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+		String[]erroArr=ex.getMessage().split("/");
+		em.setMessage(erroArr[0]);
+		em.setCode(Integer.parseInt(erroArr[1]));
+		return em;
+		
+	}
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	@ExceptionHandler(value= {UnAuthException.class})
+	@ResponseBody
+	protected ErrorMessage notAuthError(RuntimeException ex,WebRequest wr) {
 		ErrorMessage em=new ErrorMessage();
 		em.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
 		String[]erroArr=ex.getMessage().split("/");

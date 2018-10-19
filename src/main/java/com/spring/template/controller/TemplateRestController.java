@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.error.NotExsistExcpetion;
+import com.spring.error.UnAuthException;
 import com.spring.reply.service.ReplyService;
 import com.spring.reply.vo.ReplyVo;
 import com.spring.result.vo.ResultMsgVo;
@@ -63,10 +64,13 @@ public class TemplateRestController {
 	}
 	//탬플릿 생성하기
 	@RequestMapping(method=RequestMethod.POST,produces = "application/json; charset=utf-8")
-	public @ResponseBody ResultMsgVo insertTemplate(@RequestBody HashMap<String,Object>map,HttpServletRequest req) {
+	public @ResponseBody ResultMsgVo insertTemplate(@RequestParam HashMap<String,Object>map,HttpServletRequest req) {
 		templateService.insertTemplate(map,req);
 		System.out.println("임무완료:  "+map);
 		if(map.get("err_code")!=null) {
+			if(map.get("err_code").equals("-47474447")) {
+				throw new UnAuthException("UnAuth/-301");				
+			}
 			throw new NotExsistExcpetion("fail/-31");
 		}
 		//System.out.println("성공시 메세지:"+rmv.toString());
@@ -126,11 +130,12 @@ public class TemplateRestController {
 	 //템플릿 수정하기
 	 @RequestMapping(value="/update",method=RequestMethod.POST, produces = "application/json; charset=utf-8")
 	 public ResultMsgVo updateTemplate(@RequestParam HashMap<String,Object> map,HttpServletRequest req) {
-		 map.put("htmlFilePath", "D:\\uploadFile\\C.m.A\\C.m.A(4).html");
-		 map.put("cssFilePath", "D:\\uploadFile\\C.m.A\\C.m.A(4).css");
-		 map.put("thumbnail", "/tImg/templatephoto/C.m.A/Jellyfish.jpg");
+		
 		 templateService.updateTemplate(map,req);
 		 if(map.get("err_code")!=null) {
+			 if(map.get("err_code").equals("-47474447")) {
+					throw new UnAuthException("UnAuth/-301");				
+				}
 				throw new NotExsistExcpetion("fail/-32");
 			}
 		 return new ResultMsgVo();

@@ -42,13 +42,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserVo checkUser(HttpServletRequest req,HttpServletResponse resp,@RequestParam HashMap<String, Object> map) {	
 				UserVo uservo=userDao.checkUser(map);
+				if(uservo!=null) {
+				System.out.println("fdsadfasdfa "+uservo);
 				UserVo userVo=new UserVo();
 				userVo.setAuth(uservo.getAuth());
 				userVo.setNickname(uservo.getNickname());
 				userVo.setThumbnail(uservo.getThumbnail());
+				userVo.setSocialType(uservo.getSocialType());
 				String token=tokenService.createToken(userVo);
 				map.put("token", token);
-		return userVo;
+				return userVo;
+				}
+		return uservo;
 		
 	}
 
@@ -80,43 +85,53 @@ public class UserServiceImpl implements UserService {
 		
 		String nickName=(String) map.get("nickname");
 		
-		String filePath="D:\\uploadFile\\profilePhoto\\";
+		String filePath="D:\\wsspring02\\WebberPrj\\wepapp\\WEB-INF\\resources\\img\\profileP\\";
 		filePath+=nickName;
 		
-		MultipartHttpServletRequest mhsr=(MultipartHttpServletRequest) req;
-		Iterator<String> iterator=mhsr.getFileNames();//Iterator 갯수 체크
-		MultipartFile mf=null; 
-		while (iterator.hasNext()) {
-			//img파일 저장 위치
-			
-			File file=new File(filePath);
+	
+		File file=new File(filePath);
+		String sFileName="";	
 			
 			if(file.exists()) {
-				file.delete();
-			}
-			
-			if(!file.exists()) {
-				file.mkdirs();
-			}
-			
-			System.out.println("파일 생성");
+
+					if(file.isDirectory()){ //파일이 디렉토리인지 확인
+		                 
+			                File[] files = file.listFiles();
+			                 
+			                for( int i=0; i<files.length; i++){
+			                    if( files[i].delete() ){
+			                        System.out.println(files[i].getName()+" 삭제성공");
+			                    }else{
+			                        System.out.println(files[i].getName()+" 삭제실패");
+			                    }
+			                }
+			                
+					}
 					
-				}
-	    String sFileName=uif.uploadImg(req, filePath);
+						sFileName=uif.uploadImg(req, filePath);				
+						System.out.println("파일 생성");					
+					
+			}else {
+				file.mkdirs();
+				sFileName=uif.uploadImg(req, filePath);					
+			}
+
 	    if(sFileName!=null) {
-		map.put("thumbnail", "/tImg/profilePhoto/"+nickName+"/"+sFileName);
-		userDao.updateInfo(map);
+		map.put("thumbnail", "/img/profileP/"+nickName+"/"+sFileName);
+			
+			userDao.updateInfo(map);
 		
-			UserVo uservo=userDao.checkUser(map);
+			List<UserVo> userList=userDao.getUser(map);
+			UserVo uservo=userList.get(0);
+			System.out.println(uservo);
 			String token=tokenService.createToken( uservo);
-			MakeCookie mc=new MakeCookie();
-			mc.makeCookie(req, resp, token);			
-		 
-			/*HttpSession session=req.getSession();
-			session.invalidate();
-			Map<String,Object> detailInfo=tokenService.get(token);
-			MakeSession ms=new MakeSession();
-			ms.makeSession(detailInfo, req, resp);*/			
+			map.put("token", token);
+			UserVo userVo=new UserVo();
+			userVo.setAuth(uservo.getAuth());
+			userVo.setNickname(uservo.getNickname());
+			userVo.setThumbnail(uservo.getThumbnail());
+			userVo.setSocialType(uservo.getSocialType());
+			map.put("userVo", userVo);
 		
 	    }else {
 	    	userDao.updateInfo(map);

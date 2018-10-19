@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.board.service.BoardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.error.NotExsistExcpetion;
+import com.spring.error.UnAuthException;
 import com.spring.reply.service.ReplyService;
 import com.spring.reply.vo.ReplyVo;
 import com.spring.result.vo.ResultMsgVo;
@@ -57,10 +58,13 @@ public class BoardRestController {
 	//자유게시판 게시물 추가하기
 	@RequestMapping(method=RequestMethod.POST)
 	public ResultMsgVo insertBoard(@RequestParam HashMap<String,Object> map) {
-		System.out.println(map);
+		System.out.println("fdsfasdf "+map);
 		boardService.insertBoard(map);
 		if(map.get("err_code")!=null) {
-			throw new NotExsistExcpetion("fail/-22");
+			if(map.get("err_code").equals("-47474447")) {
+				throw new UnAuthException("UnAuth/-301");				
+			}
+			throw new NotExsistExcpetion("fail/-21");
 		}
 		return new ResultMsgVo();
 	}
@@ -71,7 +75,10 @@ public class BoardRestController {
 		map.put("board_id", board_id);
 		boardService.updateBoard(map);
 		if(map.get("err_code")!=null) {
-			throw new NotExsistExcpetion("fail/-23");
+			if(map.get("err_code").equals("-47474447")) {
+				throw new UnAuthException("UnAuth/-301");				
+			}
+			throw new NotExsistExcpetion("fail/-22");
 		}
 		return new ResultMsgVo();
 	}

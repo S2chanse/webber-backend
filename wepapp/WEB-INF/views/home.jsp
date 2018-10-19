@@ -18,7 +18,8 @@
 			  var formData = new FormData($("#editorFileUpload")[0]);
 			  console.log(formData);
 			$.ajax({
-				url:"/api/template/update",
+				//url:"/api/template/update",
+				url:"/api/user/admin01",
 				type:"POST",
 				enctype: "multipart/form-data",
 				data:formData,
@@ -90,7 +91,7 @@
 </form>
 
 <button class="button" id="getUserList"> getuser</button>
-<!-- <img src="/tImg/profilePhoto/testUser01/Chrysanthemum.jpg"/>-->
+<img src="/img/templateP/TTTTTTT/Jellyfish.jpg"/>
 <!-- <img src="/tImg/templatephoto/C.m.A/Desert.jpg" alt="사진2"/> -->
 
 <table id="userList">
