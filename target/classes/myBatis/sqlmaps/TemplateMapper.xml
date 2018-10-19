@@ -49,6 +49,7 @@
 	</insert>
 		<delete id="TemplateDelete" statementType="CALLABLE"  parameterType="hashmap">
 		{Call PKG_WBOARD.PROC_TMPLATE_DELETE(
+		#{nickname,mode=IN,jdbcType=VARCHAR},
 		 #{board_id,mode=IN,jdbcType=VARCHAR}
 		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
 		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}
@@ -56,6 +57,7 @@
 	</delete>
 		<delete id="TemplateUpdate" statementType="CALLABLE"  parameterType="hashmap">
 		{Call PKG_WBOARD.PROC_TMPLATE_UPDATE(
+		 #{nickname,mode=IN,jdbcType=VARCHAR},
 		 #{board_id,mode=IN,jdbcType=VARCHAR}
 		,#{thumbnail,mode=IN,jdbcType=VARCHAR}
 		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}

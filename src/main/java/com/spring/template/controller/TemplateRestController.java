@@ -146,6 +146,9 @@ public class TemplateRestController {
 	 public ResultMsgVo deleteTemplate(@RequestBody HashMap<String,Object>map) {
 		 templateService.deleteTemplate(map);
 		 if(map.get("err_code")!=null) {
+			 if(map.get("err_code").equals("-47474447")) {
+					throw new UnAuthException("UnAuth/-301");				
+				}
 				throw new NotExsistExcpetion("fail/-33");
 			}
 		 return new ResultMsgVo();

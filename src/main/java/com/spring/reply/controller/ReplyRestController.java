@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.error.NotExsistExcpetion;
+import com.spring.error.UnAuthException;
 import com.spring.reply.service.ReplyService;
 import com.spring.reply.vo.ReplyVo;
 import com.spring.result.vo.ResultMsgVo;
@@ -38,6 +39,9 @@ public class ReplyRestController {
 	public ResultMsgVo insertReply(@RequestBody HashMap<String,Object>map) {
 		replyService.insertReply(map);
 		if(map.get("err_code")!=null) {
+			if(map.get("err_code").equals("-47474447")) {
+				throw new UnAuthException("UnAuth/-301");				
+			}
 			throw new NotExsistExcpetion("fail/-41");
 		}
 		return new ResultMsgVo();
@@ -48,6 +52,9 @@ public class ReplyRestController {
 	public ResultMsgVo modifyReply(@RequestBody HashMap<String,Object>map) {
 		replyService.updateReply(map);
 		if(map.get("err_code")!=null) {
+			if(map.get("err_code").equals("-47474447")) {
+				throw new UnAuthException("UnAuth/-301");				
+			}
 					throw new NotExsistExcpetion("fail/-42");
 		}
 		return new ResultMsgVo();
@@ -58,6 +65,9 @@ public class ReplyRestController {
 	public ResultMsgVo deleteReply(@RequestBody HashMap<String,Object>map) {
 		replyService.deleteReply(map);
 		if(map.get("err_code")!=null) {
+			if(map.get("err_code").equals("-47474447")) {
+				throw new UnAuthException("UnAuth/-301");				
+			}
 			if(map.get("err_code").equals("-2747")) {
 				throw new NotExsistExcpetion("fail/-301");
 			}else {				

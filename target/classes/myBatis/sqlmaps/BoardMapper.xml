@@ -40,6 +40,7 @@
 	</insert>
 	<update id="BoardUpdate" statementType="CALLABLE" parameterType="hashmap">
 	{Call PKG_WBOARD.PROC_WBOARD_UPDATE(
+	#{nickname,mode=IN,jdbcType=VARCHAR},
 		#{board_id,mode=IN,jdbcType=VARCHAR}
 		,#{title,mode=IN,jdbcType=VARCHAR}
 		,#{content,mode=IN,jdbcType=VARCHAR}
@@ -49,6 +50,7 @@
 	</update>
 	<delete id="BoardDelete" statementType="CALLABLE" parameterType="hashmap">
 		{Call PKG_WBOARD.PROC_WBOARD_DELETE(
+		#{nickname,mode=IN,jdbcType=VARCHAR},
 		#{board_id,mode=IN,jdbcType=VARCHAR}
 		,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}
 		,#{err_msg,mode=OUT,jdbcType=VARCHAR,javaType=String}

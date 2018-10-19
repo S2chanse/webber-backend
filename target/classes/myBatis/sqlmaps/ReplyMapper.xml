@@ -40,6 +40,7 @@
 	</insert>
 	<update id="ReplyUpdate" statementType="CALLABLE" parameterType="hashmap" >
 	{Call PKG_WBOARD.PROC_REPLY_UPDATE(
+		#{nickname,mode=IN,jdbcType=VARCHAR},
 		 #{board_id,mode=IN,jdbcType=VARCHAR,javaType=String}
 		 ,#{reply_id,mode=IN,jdbcType=VARCHAR,javaType=String}
 		 ,#{contents,mode=IN,jdbcType=VARCHAR,javaType=String}
@@ -49,6 +50,7 @@
 	</update>
 	<delete id="ReplyDelete" statementType="CALLABLE" parameterType="hashmap" >
 	{Call PKG_WBOARD.PROC_REPLY_DELETE(
+		 #{nickname,mode=IN,jdbcType=VARCHAR},
 		  #{board_id,mode=IN,jdbcType=VARCHAR,javaType=String}
 		 ,#{reply_id,mode=IN,jdbcType=VARCHAR,javaType=String}
 		 ,#{err_code,mode=OUT,jdbcType=VARCHAR,javaType=String}

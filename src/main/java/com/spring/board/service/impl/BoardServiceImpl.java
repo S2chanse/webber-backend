@@ -64,7 +64,19 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public void deleteBoard(HashMap<String, Object> map) {
-		boardDao.deleteBoard(map);
+		String token=(String) map.get("access_token");
+		
+		if(tokenService.isUsable(token)) {
+			
+			Map<String,Object> userInfo=tokenService.get(token);
+			String nickname=(String) userInfo.get("nickname");
+			map.put("nickname",nickname);
+			boardDao.deleteBoard(map);
+			
+		}else {
+			map.put("err_code", "-47474447");
+			return ;
+		}
 		
 	}
 

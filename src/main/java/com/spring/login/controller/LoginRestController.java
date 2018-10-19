@@ -66,11 +66,26 @@ public class LoginRestController {
 	}
 	
 	@RequestMapping(value="/register",method=RequestMethod.POST)
-	public ResultMsgVo userRegist(@RequestParam HashMap<String,Object> map) {
+	public HashMap<String,Object> userRegist(@RequestParam HashMap<String,Object> map,HttpServletRequest req,HttpServletResponse resp) {
 		System.out.println("회원가입"+map);
 		
 		userService.insertUser(map);
-		return new ResultMsgVo();
+		UserVo uservo=userService.checkUser(req,resp,map);
+		String token=(String) map.get("token");
+		if(map.get("err_code")!=null) {
+			if(map.get("err_code").equals("-4444")) {			
+				throw new NotExsistExcpetion("Out User/-2");
+			}
+			if(map.get("err_code").equals("77777")) {			
+				throw new NotExsistExcpetion("Not User/-1");
+			}
+				throw new OracleError("Not regist/-9");
+		}
+		HashMap<String,Object> result=new HashMap<>();
+		result.put("token", token);
+		result.put("userVo",uservo);
+		System.out.println("3000으로보내는 자료 :"+result);
+		return result;
 	}
 	
 	@RequestMapping(value="/logout",method=RequestMethod.GET, produces = "application/json; charset=utf-8")

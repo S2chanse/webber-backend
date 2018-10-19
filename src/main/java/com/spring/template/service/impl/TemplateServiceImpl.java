@@ -216,7 +216,17 @@ public class TemplateServiceImpl implements TemplateService {
 	}
 	@Override
 	public void deleteTemplate(HashMap<String, Object> map) {
-		templateDao.deleteTemplate(map);
+		String token=(String) map.get("token");
+		
+		if(tokenService.isUsable(token)) {
+			Map<String,Object> userInfo=tokenService.get(token);
+			String nickname=(String) userInfo.get("nickname");
+			map.put("nickname",nickname);
+			templateDao.deleteTemplate(map);
+		}else {
+			map.put("err_code", "-47474447");
+			return ;
+		}
 		
 	}
 	@Override

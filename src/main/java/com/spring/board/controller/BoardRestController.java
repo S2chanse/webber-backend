@@ -58,7 +58,7 @@ public class BoardRestController {
 	//자유게시판 게시물 추가하기
 	@RequestMapping(method=RequestMethod.POST)
 	public ResultMsgVo insertBoard(@RequestParam HashMap<String,Object> map) {
-		System.out.println("fdsfasdf "+map);
+		//System.out.println("fdsfasdf "+map);
 		boardService.insertBoard(map);
 		if(map.get("err_code")!=null) {
 			if(map.get("err_code").equals("-47474447")) {
@@ -89,6 +89,9 @@ public class BoardRestController {
 		map.put("board_id", board_id);
 		boardService.deleteBoard(map);
 		if(map.get("err_code")!=null) {
+			if(map.get("err_code").equals("-47474447")) {
+				throw new UnAuthException("UnAuth/-301");				
+			}
 			if(map.get("err_code").equals("-2747")) {
 				throw new NotExsistExcpetion("fail/-301");				
 			}else {				
